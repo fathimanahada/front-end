@@ -69,7 +69,7 @@ export const OverviewTraffic = (props) => {
             {
               labels :keys,
               dataLabels : {
-                enabled :false
+                enabled :true
               }
             } 
           }

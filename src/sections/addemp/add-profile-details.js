@@ -13,6 +13,9 @@ import {
 import { insertDB, deletDB } from 'src/dbservices/db';
 import { onSpaceOrEnter } from '@mui/x-date-pickers/internals';
 import { useRouter } from 'next/router';
+import axios from 'axios'
+import { setFips } from 'crypto';
+
 
 
 
@@ -25,9 +28,10 @@ export const AddProfileDetails = () => {
     lastName: '',
     email: '',
     phone: '',
-    jobtitle: ''
+    jobtitle: '',
+    // url : ''
   });
-  console.log("values ==",values.firstName)
+  // console.log("values ==",values.firstName)
 
   const router = useRouter()
 
@@ -36,22 +40,15 @@ export const AddProfileDetails = () => {
       setValues((prevState) => ({
         ...prevState,
         [event.target.name]: event.target.value
+        
       }));
     },
     []
   );
   
   // console.log("values ==",typeof values.phoneNumber)
-  const [error,setError] = useState()
-  // const validateEmail = () => {
-  //   const re = /\S+@\S+\.\S+/;
-  //   if (!re.test(email)) {
-  //     setError('Please enter a valid email address');
-  //     return false;
-  //   }
-  //   setError('');
-  //   return true;
-  // };
+  const [file, setFile] = useState(null);
+  const [imgpath,setImgpath] = useState();
   const handleSubmit = useCallback(
     (event) => {
      event.preventDefault()
@@ -94,32 +91,85 @@ export const AddProfileDetails = () => {
     //   setErrors(false)
     //    handleInsert()
     // }
+    const handleImgSubmit = async () => {
+ 
+      if (file) {
+   
+        const formData = new FormData();
+        formData.append('file', file);
+  console.log('formDta',formData)
+        try {
+    
+          const response = await axios.post(
+            'http://localhost:8086/upload_image',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
+        //  if(response && response.data && response.data.image_path){
+          setImgpath(response.data.image_path);
+          //  console.log(image_path)
+          console.log('Response:', response);
+         
+        } catch (error) {
+          console.log('Error:', error);
+        }
+      }
+    };
+    const handleInsert = async () => {
+      console.log("values", values)
+      const newdata = await insertDB({ values });
+      console.log("db", newdata)
+      try {
+        alert("Saved successfully")
+        router.push('/customers')
+      } catch (e) {
+        alert("Some fields are required")
+      }
+     }
+    // try {
+    //   alert("Saved successfully")
+    //   router.push('/customers')
+    // } catch (e) {
+    //   alert("Some fields are required")
+    // }
+      
+      const handleOnChange = (e) => {
+        console.log('File selected:', e.target.files[0]);
+        setFile(e.target.files[0]);
+       
+         };
+         console.log("setfile ==",file)
+     
 
-  
-  const handleInsert = async () => {
-    console.log("values", values)
-    const newdata = await insertDB({ values });
-    console.log("db", newdata)
-    try {
-      alert("Saved successfully")
-      router.push('/customers')
-    } catch (e) {
-      alert("Some fields are required")
-    }
-
-
-  }
   return (
     <form
       autoComplete="off"
       noValidate
       onSubmit={handleSubmit}
     >
-      <Card>
+       <Card>
         <CardHeader
           subheader="Add new employee details"
-        //title="Profile"
+        title="Profile"
         />
+        <CardActions>
+        <Button fullWidth variant="text" component="label">
+          Upload picture
+          <input 
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleOnChange}
+            
+          />
+        </Button>
+        <Button fullWidth variant="contained" onClick={handleImgSubmit}>
+          Submit
+        </Button>
+        </CardActions> 
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid

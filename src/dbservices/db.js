@@ -36,28 +36,35 @@ export const getNewData = async () => {
      .find({})
 }
 
-export const getAggregate = async(id) => {
-  return await getDBInstance(app).collection('collection')
-  .aggregate([
-    {
+export const getAggregate = async(startdate, enddate) => {
+  const query = [];
+  // if(s){
+  //   query.push({
+  //     $
+  //   })
+  // }
+  query.push({
     $group: {
       "_id": "$Average_emotion",
       "count": {
         "$sum": 1
       }
     }
-  }
-  ])
+  })
+  return await getDBInstance(app).collection('collection')
+  .aggregate(query)
 }
 
-export const insertDB = async ({values}) => {
+export const insertDB = async ({values,imageFile}) => {
  return await getDBInstance(app).collection('employee')
      .insertOne({
       firstname:values.firstName,
       lastname:values.lastName,
       email:values.email,
       phoneNumber:Number(values.phone),
-      jobTitle:values.jobtitle
+      jobTitle:values.jobtitle,
+      Image : imageFile
+
     })
 }
 

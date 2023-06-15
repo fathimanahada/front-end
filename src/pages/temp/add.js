@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Box, Button, Container, SvgIcon, Typography } from '@mui/material';
 import { Stack, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { AddProfile } from '../../sections/addemp/add-profile';
+// import { AddProfile } from '../../sections/addemp/add-profile';
 import { AddProfileDetails } from '../../sections/addemp/add-profile-details';
 
 const Add = () => (
@@ -31,7 +31,7 @@ const Add = () => (
               container
               spacing={3}
             >
-              <Grid
+              {/* <Grid
                 xs={12}
                 md={6}
                 lg={4}
@@ -42,10 +42,10 @@ const Add = () => (
                 xs={12}
                 md={6}
                 lg={8}
-              >
+              > */}
                 <AddProfileDetails />
               </Grid>
-            </Grid>
+             {/* </Grid>  */}
           </div>
         </Stack>
       </Container>
