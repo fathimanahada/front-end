@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState} from 'react';
 import {
   Avatar,
   Box,
@@ -9,6 +9,7 @@ import {
   CardHeader,
   Divider,
   TextField,
+
   Unstable_Grid2 as Grid
 } from '@mui/material';
 import { insertDB, deletDB } from 'src/dbservices/db';
@@ -16,10 +17,14 @@ import { onSpaceOrEnter } from '@mui/x-date-pickers/internals';
 import { useRouter } from 'next/router';
 import axios from 'axios'
 import { setFips } from 'crypto';
+import Image from 'next/image';
 
 
 
-
+const imageLoader = ({ src, width, quality }) => {
+  return `http://127.0.0.1:8086//get_image/nahzan.jpg/${src}?w=${width}&q=${quality || 75}`
+}
+ 
 
 
 
@@ -58,8 +63,8 @@ export const AddProfileDetails = () => {
   );
 
   const valueCheck = (event) => {
-    
-    
+
+
     if (!values.firstName && !values.lastName && !values.email && !values.phone && values.jobtitle) {
       alert("Some fields are required")
     }
@@ -110,7 +115,7 @@ export const AddProfileDetails = () => {
       alert("Some fields are required")
     }
   }
- 
+
 
   const handleOnChange = async (e) => {
     console.log('File selected:', e.target.files[0]);
@@ -160,27 +165,26 @@ export const AddProfileDetails = () => {
       onSubmit={handleSubmit}
     >
       <Card>
-      <CardContent>
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <Avatar
-            src={imgpath} 
+        <CardContent>
+          <Box
             sx={{
-              height: 80,
-              mb: 2,
-              width: 80,
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column',
             }}
-          />
-          
-        </Box>
-      </CardContent>
-      <Divider />
-      <CardActions>
+          >
+            <Image
+             src="http://127.0.0.1:8086/get_image/nahzan.jpg"
+              width={100}
+              height={100}
+              alt="Picture of the author"
+            />
+            {/* <Avatar alt="Remy Sharp" src="/static/faces/IMG-20181211-WA0014.jpg" /> */}
+
+          </Box>
+        </CardContent>
+        <Divider />
+        <CardActions>
           <Button fullWidth variant="text" component="label" type='button'>
             Upload picture
             <input
@@ -198,7 +202,7 @@ export const AddProfileDetails = () => {
           subheader="Add new employee details"
           title="Profile"
         />
-        
+
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid

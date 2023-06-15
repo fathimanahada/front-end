@@ -1,5 +1,15 @@
 module.exports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8086',
+        pathname: '/get_image/**',
+      },
+    ],
+  },
   async rewrites() {
 
     return [
@@ -14,5 +24,5 @@ module.exports = {
 
     ]
 
-  },
+  }
 };
