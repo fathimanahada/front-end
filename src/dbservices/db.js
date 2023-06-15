@@ -55,7 +55,7 @@ export const getAggregate = async(startdate, enddate) => {
   .aggregate(query)
 }
 
-export const insertDB = async ({values,imageFile}) => {
+export const insertDB = async ({values,url}) => {
  return await getDBInstance(app).collection('employee')
      .insertOne({
       firstname:values.firstName,
@@ -63,7 +63,7 @@ export const insertDB = async ({values,imageFile}) => {
       email:values.email,
       phoneNumber:Number(values.phone),
       jobTitle:values.jobtitle,
-      Image : imageFile
+      Image :url
 
     })
 }
