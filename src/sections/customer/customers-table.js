@@ -138,21 +138,19 @@ export const CustomersTable = (props) => {
                       />
                     </TableCell>
                     <TableCell>
-                    <Avatar 
+                      {/* <Avatar 
                     src={customer.Image} 
                     style={{ width: '75px', height: '75px' }} >
                     
-                        </Avatar>
-                      {/* <Image
+                        </Avatar> */}
+                      <Image
                         //  src= {`http://127.0.0.1:8086/get_image/${imgpath}`}
                         // src={customer.Image}
                         // src = '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
                         width={50}
                         height={50}
-                        alt= {<Avatar src={customer.avatar}>
-                       
-                      </Avatar>}
-                      /> */}
+
+                      />
                     </TableCell>
                     <TableCell>
                       <Stack
