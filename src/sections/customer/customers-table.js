@@ -18,10 +18,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Scrollbar } from 'src/components/scrollbar';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 
 import { getInitials } from 'src/utils/get-initials';
-import { deletDB} from 'src/dbservices/db';
+import { deletDB } from 'src/dbservices/db';
 
 export const CustomersTable = (props) => {
   const {
@@ -42,29 +43,29 @@ export const CustomersTable = (props) => {
 
   const router = useRouter()
   const deletid = router.query._id;
-  console.log("id == ",deletid);
+  console.log("id == ", deletid);
 
   const selectedSome = (selected.length > 0) && (selected.length < items.length);
   const selectedAll = (items.length > 0) && (selected.length === items.length);
 
-  const handleDelet =  async (deletid) => {
-    console.log("id from mongodb",deletid)
+  const handleDelet = async (deletid) => {
+    console.log("id from mongodb", deletid)
     try {
-      
-      const deletdata = await deletDB({deletid});
-      console.log("db",deletdata);
+
+      const deletdata = await deletDB({ deletid });
+      console.log("db", deletdata);
       // console.log("db id",id)
-      if(deletdata){
+      if (deletdata) {
         // router.reload()
         reloadData()
       }
-      
+
     }
-    catch (e){
-       console.log("Error =",e)
+    catch (e) {
+      console.log("Error =", e)
     }
   }
-   
+
 
   return (
     <Card>
@@ -86,9 +87,9 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                {/* <TableCell>
-                  Id
-                </TableCell> */}
+                <TableCell>
+                  Profile
+                </TableCell>
                 <TableCell>
                   FirstName
                 </TableCell>
@@ -111,7 +112,8 @@ export const CustomersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((customer) => {
-                console.log("customer",customer)
+                console.log("customer", customer.Image)
+                let url = `http://127.0.0.1:8086/get_image/${customer.Image}`
                 const isSelected = selected.includes(customer.id);
                 // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
@@ -135,9 +137,23 @@ export const CustomersTable = (props) => {
                         }}
                       />
                     </TableCell>
-                    {/* <TableCell>
-                      {customer.id}
-                    </TableCell> */}
+                    <TableCell>
+                    <Avatar 
+                    src={customer.Image} 
+                    style={{ width: '75px', height: '75px' }} >
+                    
+                        </Avatar>
+                      {/* <Image
+                        //  src= {`http://127.0.0.1:8086/get_image/${imgpath}`}
+                        // src={customer.Image}
+                        // src = '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
+                        width={50}
+                        height={50}
+                        alt= {<Avatar src={customer.avatar}>
+                       
+                      </Avatar>}
+                      /> */}
+                    </TableCell>
                     <TableCell>
                       <Stack
                         alignItems="center"
@@ -165,18 +181,18 @@ export const CustomersTable = (props) => {
                       {customer.jobTitle}
                     </TableCell>
                     <TableCell>
-                    <Box display="flex" alignItems="center">
-                    <IconButton onClick={() => router.push({
-                      pathname: `/update/${customer._id}`,
-                      // query: { id : customer._id },
-                    })}
-                      
+                      <Box display="flex" alignItems="center">
+                        <IconButton onClick={() => router.push({
+                          pathname: `/update/${customer._id}`,
+                          // query: { id : customer._id },
+                        })}
 
-                    >
-                      <EditIcon />
-                    </IconButton>
-                      {<IconButton  onClick={() => handleDelet(customer._id)}>
-                        <DeleteIcon fontSize="small"/></IconButton>}
+
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        {<IconButton onClick={() => handleDelet(customer._id)}>
+                          <DeleteIcon fontSize="small" /></IconButton>}
                       </Box>
                     </TableCell>
                   </TableRow>
@@ -193,7 +209,7 @@ export const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        // rowsPerPageOptions={[5, 10, 25]}
+      // rowsPerPageOptions={[5, 10, 25]}
       />
     </Card>
   );

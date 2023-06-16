@@ -18,13 +18,11 @@ import { useRouter } from 'next/router';
 import axios from 'axios'
 import { setFips } from 'crypto';
 import Image from 'next/image';
+// import proImage from '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
 
 
 
-const imageLoader = ({ src, width, quality }) => {
-  return `http://127.0.0.1:8086//get_image/nahzan.jpg/${src}?w=${width}&q=${quality || 75}`
-}
- 
+
 
 
 
@@ -40,7 +38,7 @@ export const AddProfileDetails = () => {
   // console.log("values ==", values.Imgurl)
 
   const router = useRouter()
-
+ 
   const handleChange = useCallback(
     (event) => {
       setValues((prevState) => ({
@@ -101,7 +99,7 @@ export const AddProfileDetails = () => {
 
   // };
   const handleInsert = async () => {
-    console.log('handleInsert==', imgpath);
+    // console.log('handleInsert==', imgpath);
     const newdata = await insertDB({ values, url: imgpath });
     const newValues = {
       ...values,
@@ -141,19 +139,19 @@ export const AddProfileDetails = () => {
         //  if(response && response.data && response.data.image_path){
 
         //  console.log(image_path)
-        console.log("res", response)
-        if (response) {
-          const url = response.data
+        console.log("res", response.data)
+        if (response.data) {
+          // filename = response.data;
+          const url = `http://127.0.0.1:8086/get_image/${response.data}`; // Assuming the images are stored in the static/faces directory
           setImgpath(url);
+          // console.log('imgpath:', url);
+        } else {
+          console.log('No image path received');
         }
-
-        // console.log('Response==',url);
-
       } catch (error) {
         console.log('Error:', error);
       }
     }
-
   };
   //  console.log("setfile ==",)
   // console.log('Response==', imgpath);
@@ -174,7 +172,9 @@ export const AddProfileDetails = () => {
             }}
           >
             <Image
-             src="http://127.0.0.1:8086/get_image/nahzan.jpg"
+            //  src= {`http://127.0.0.1:8086/get_image/${imgpath}`}
+            src= {imgpath}
+            // src = '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
               width={100}
               height={100}
               alt="Picture of the author"
