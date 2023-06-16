@@ -81,7 +81,8 @@ export const deletDB = async ({deletid}) => {
         lastname:values.lastName,
         email:values.email,
         phoneNumber:Number(values.phone),
-        jobTitle:values.jobtitle
+        jobTitle:values.jobtitle,
+        
       }})
  }
  export const getupdateData = async (mongoid) => {

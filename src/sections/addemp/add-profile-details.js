@@ -136,15 +136,11 @@ export const AddProfileDetails = () => {
             },
           }
         );
-        //  if(response && response.data && response.data.image_path){
-
-        //  console.log(image_path)
+        
         console.log("res", response.data)
         if (response.data) {
-          // filename = response.data;
-          const url = `http://127.0.0.1:8086/get_image/${response.data}`; // Assuming the images are stored in the static/faces directory
-          setImgpath(url);
-          // console.log('imgpath:', url);
+          const url = `http://127.0.0.1:8086/get_image/${response.data}`; 
+          setImgpath(url)
         } else {
           console.log('No image path received');
         }
@@ -153,8 +149,7 @@ export const AddProfileDetails = () => {
       }
     }
   };
-  //  console.log("setfile ==",)
-  // console.log('Response==', imgpath);
+ 
 
   return (
     <form
@@ -172,14 +167,11 @@ export const AddProfileDetails = () => {
             }}
           >
             <Image
-            //  src= {`http://127.0.0.1:8086/get_image/${imgpath}`}
             src= {imgpath}
-            // src = '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
               width={100}
               height={100}
-              alt="Picture of the author"
+              alt="Select a picture"
             />
-            {/* <Avatar alt="Remy Sharp" src="/static/faces/IMG-20181211-WA0014.jpg" /> */}
 
           </Box>
         </CardContent>
@@ -194,9 +186,7 @@ export const AddProfileDetails = () => {
               value={values.Imgurl}
             />
           </Button>
-          {/* <Button fullWidth variant="contained" onClick={handleImgSubmit}>
-          Submit
-        </Button> */}
+          
         </CardActions>
         <CardHeader
           subheader="Add new employee details"

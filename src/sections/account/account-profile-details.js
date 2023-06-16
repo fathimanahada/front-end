@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+  Avatar,
+  Typography,
   Box,
   Button,
   Card,
@@ -23,35 +25,69 @@ export const AccountProfileDetails = () => {
   const router = useRouter();
   const mongoid = router.query.id;
 
-  console.log("id == ",router.query.id);
+  console.log("id == ", router.query.id);
   const [open, setOpen] = useState(false);
-
+  const [file, setFile] = useState(null);
   const [values, setValues] = useState({
     // _id :id,
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    jobtitle:''
-   
+    jobtitle: '',
+    url: ''
   });
-useEffect(()=>{
-  getEmployeeData();
-},[] )
- const getEmployeeData = async() =>{
-  const results= await getupdateData(mongoid)
-  console.log("resul",results) 
-  setValues({
-    // _id :id,
-    firstName: results.firstname,
-    lastName: results.lastname,
-    email: results.email,
-    phone: results.phoneNumber,
-    jobtitle:results.jobTitle
-   
-  })
- }
- 
+  useEffect(() => {
+    getEmployeeData();
+  }, [])
+  const getEmployeeData = async () => {
+    const results = await getupdateData(mongoid)
+    console.log("resul", results)
+    setValues({
+      // _id :id,
+      firstName: results.firstname,
+      lastName: results.lastname,
+      email: results.email,
+      phone: results.phoneNumber,
+      jobtitle: results.jobTitle,
+      url: results.Image
+    })
+    // console.log("imgurl",url)
+  }
+  const handleOnChange = async (e) => {
+    console.log('File selected:', e.target.files[0]);
+    setFile(e.target.files[0]);
+
+
+    if (e.target.files && e.target.files[0]) {
+
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      console.log('formDta', formData)
+      try {
+
+        const response = await axios.post(
+          'http://localhost:8086/upload_image',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        console.log("res", response.data)
+        if (response.data) {
+          const url = `http://127.0.0.1:8086/get_image/${response.data}`;
+          setImgpath(url)
+        } else {
+          console.log('No image path received');
+        }
+      } catch (error) {
+        console.log('Error:', error);
+      }
+    }
+  };
   const handleChange = useCallback(
     (event) => {
       setValues((prevState) => ({
@@ -68,20 +104,21 @@ useEffect(()=>{
     },
     []
   );
-    const handleUpdate =  async () => {
-      console.log("values",values)
-      setOpen(true)
+  const handleUpdate = async () => {
+    console.log("values", values)
+    setOpen(true)
     try {
-      
-      const newdata = await updateDB({values,mongoid});
-      console.log("db",newdata),
-      console.log("db id",id)
-      if(newdata){
+
+      const newdata = await updateDB({ values, mongoid });
+
+      console.log("db", newdata),
+        console.log("db id", id)
+      if (newdata) {
         setOpen(true)
       }
     }
-    catch (e){
-      console.log("Error =",e)
+    catch (e) {
+      console.log("Error =", e)
     }
   }
 
@@ -95,7 +132,7 @@ useEffect(()=>{
 
   const action = (
     <>
-     
+
       <IconButton
         size="small"
         aria-label="close"
@@ -114,10 +151,46 @@ useEffect(()=>{
       onSubmit={handleSubmit}
     >
       <Card>
+        <CardContent>
+          <Box
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            <Avatar
+              src={values.url}
+              sx={{
+                height: 80,
+                mb: 2,
+                width: 80
+              }}
+            />
+            
+          </Box>
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button fullWidth variant="text" component="label" type='button'>
+            Edit picture
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleOnChange}
+              value={values.Imgurl}
+            />
+          </Button>
+        </CardActions>
+      </Card>
+      <Card>
         <CardHeader
           subheader="The information can be edited"
           title="Profile"
         />
+        <CardActions>
+
+        </CardActions>
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid
@@ -130,10 +203,10 @@ useEffect(()=>{
               >
                 <TextField
                   fullWidth
-                  helperText="Please specify the first name"
+                  // helperText="Please specify the first name"
                   label="First name"
                   name="firstName"
-                  
+
                   onChange={handleChange}
                   required
                   value={values.firstName}
@@ -194,27 +267,27 @@ useEffect(()=>{
                 xs={12}
                 md={6}
               >
-             </Grid>
+              </Grid>
             </Grid>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button  variant="contained" onClick={handleUpdate}>
+          <Button variant="contained" onClick={handleUpdate}>
             Update details
           </Button>
           <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        message="Updated Successfully"
-        action={action}
-      />
-          <Button variant="contained"  onClick={() => router.push('/customers')}>
+            open={open}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            message="Updated Successfully"
+            action={action}
+          />
+          <Button variant="contained" onClick={() => router.push('/customers')}>
             Cancel
           </Button>
         </CardActions>
-        
+
       </Card>
     </form>
   );

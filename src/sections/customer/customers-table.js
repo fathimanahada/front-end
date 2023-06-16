@@ -112,10 +112,8 @@ export const CustomersTable = (props) => {
             </TableHead>
             <TableBody>
               {items.map((customer) => {
-                console.log("customer", customer.Image)
                 let url = `http://127.0.0.1:8086/get_image/${customer.Image}`
                 const isSelected = selected.includes(customer.id);
-                // const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
 
                 return (
                   <TableRow
@@ -138,19 +136,12 @@ export const CustomersTable = (props) => {
                       />
                     </TableCell>
                     <TableCell>
-                      {/* <Avatar 
+                      <Avatar
                     src={customer.Image} 
-                    style={{ width: '75px', height: '75px' }} >
+                    style={{ width: '50px', height: '50px' }} >
                     
-                        </Avatar> */}
-                      <Image
-                        //  src= {`http://127.0.0.1:8086/get_image/${imgpath}`}
-                        // src={customer.Image}
-                        // src = '../../../../../flask/Flask-Web-Framework/Tutorial_8/static/faces/nahzan.jpg'
-                        width={50}
-                        height={50}
-
-                      />
+                        </Avatar>
+                      
                     </TableCell>
                     <TableCell>
                       <Stack
@@ -158,9 +149,7 @@ export const CustomersTable = (props) => {
                         direction="row"
                         spacing={2}
                       >
-                        {/* <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar> */}
+                        
                         <Typography variant="subtitle2">
                           {customer.firstname}
                         </Typography>
@@ -182,7 +171,6 @@ export const CustomersTable = (props) => {
                       <Box display="flex" alignItems="center">
                         <IconButton onClick={() => router.push({
                           pathname: `/update/${customer._id}`,
-                          // query: { id : customer._id },
                         })}
 
 
