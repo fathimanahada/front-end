@@ -35,6 +35,7 @@ export const AccountProfileDetails = () => {
     email: '',
     phone: '',
     jobtitle: '',
+    project :'',
     url: ''
   });
   useEffect(() => {
@@ -50,9 +51,10 @@ export const AccountProfileDetails = () => {
       email: results.email,
       phone: results.phoneNumber,
       jobtitle: results.jobTitle,
+      project : results.Project,
       url: results.Image
     })
-    // console.log("imgurl",url)
+     console.log("project",project)
   }
   const handleOnChange = async (e) => {
     console.log('File selected:', e.target.files[0]);
@@ -261,6 +263,19 @@ export const AccountProfileDetails = () => {
                   onChange={handleChange}
                   required
                   value={values.jobtitle}
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+              >
+                <TextField
+                  fullWidth
+                  label="Project"
+                  name="project"
+                  onChange={handleChange}
+                  // required
+                  value={values.project}
                 />
               </Grid>
               <Grid

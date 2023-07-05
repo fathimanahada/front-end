@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
-import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
   Button,
   Card,
@@ -14,17 +12,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { alpha, useTheme } from '@mui/material/styles';
 import { Chart } from 'src/components/chart';
-import { useState,useEffect } from 'react';
-import { getAggregate, getData } from 'src/dbservices/db';
+import { useState,useEffect, useContext } from 'react';
+import { getAggregate, getData ,getNewData} from 'src/dbservices/db';
 import * as Realm from "realm-web";
+import {Fav} from 'src/Context.js';
 
 const app = new Realm.App({ id: 'application-0-vhypf' });
-let uniqueNames = [];
 
-// const dbconnect =async () => {
-//   const graphdata = await getData();
-//   setFlag(true);
-// }
 
 
 
@@ -32,7 +26,7 @@ let uniqueNames = [];
 
 const useChartOptions = (keys) => {
   const theme = useTheme();
-
+  
   return {
     chart: {
       background: 'transparent',
@@ -111,11 +105,48 @@ const useChartOptions = (keys) => {
 };
 
 export const OverviewSales = (props) => {
+  const {favAdded, setFavAdded} = useContext(Fav);
   const { chartSeries, sx, keys } = props;
+  const [tabledata, setTableData] = useState([])
+  const [filteredData, setFilteredData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    
+    dbconnect();
+    setFavAdded(false);
+  },[favAdded])
+  const dbconnect = async () => {
+    const response = await getNewData()
+    setTableData(response)
+    setFilteredData(response);
+  
+    console.log("tabledata", response)
+  }
+  // useEffect(() => {
+  //   const dbconnect = async () => {
+  //     const response = await getNewData();
+  //     setTableData(response);
+  //     setFilteredData(response);
+  //     console.log("tabledata", response);
+  //   };
+  
+  //   if (refresh) {
+  //     dbconnect();
+  //     setRefresh(false);
+  //   }
+  // }, [refresh]);
+  
   
   const chartOptions = useChartOptions(keys);
   console.log("props", chartSeries)
-
+  let name='Nimitha.JPG';
+    //const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const handleEmployeeChange = (name) => {
+     // setSelectedEmployee(name);
+      getAggregate(name); // Call the getAggregate function with the selected name
+      setRefresh(true);
+    }
 
   return (
     <Card sx={sx}>
@@ -128,20 +159,19 @@ export const OverviewSales = (props) => {
       <Dropdown.Menu>
       <Dropdown.Item href="#/action-1">Organization based</Dropdown.Item>
              <Dropdown.Divider />
-             {/* <Dropdown.Item eventKey="4">Individual */}
               <Dropdown drop='end' >
               <Dropdown.Toggle variant="" id="dropdown-basic">
                 Individual emotions
               </Dropdown.Toggle>
+                <Dropdown.Menu align= '"start" | "end"' >
 
-              <Dropdown.Menu align= '"start" | "end"' >
-                <Dropdown.Item href="#/action-1">sad</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">happy</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">neutral</Dropdown.Item>
-                <Dropdown.Item href="#/action-4">fear</Dropdown.Item>
-                <Dropdown.Item href="#/action-5">angry</Dropdown.Item>
-                <Dropdown.Item href="#/action-6">disgust</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">surprise</Dropdown.Item>
+
+
+              {tabledata.map((empName,index)=>{
+                console.log("empname",empName.firstname)
+                return (<Dropdown.Item onClick={()=>{getAggregate('Nimitha.JPG').then(setFavAdded(true))}}>{empName.firstname}</Dropdown.Item>)
+              })}
+                
                 </Dropdown.Menu>
                 </Dropdown>
     </Dropdown.Menu>
@@ -161,17 +191,7 @@ export const OverviewSales = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        {/* <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-        >
-          Overview
-        </Button> */}
+       
       </CardActions>
     </Card>
   );

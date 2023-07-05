@@ -13,21 +13,23 @@ import {
   useTheme
 } from '@mui/material';
 import { Chart } from 'src/components/chart';
-import { useState,useEffect } from 'react';
+import { useState,useEffect ,useContext} from 'react';
 import * as Realm from "realm-web";
 import { getAggregate } from 'src/dbservices/db';
-
+import {Fav} from 'src/Context.js';
 const app = new Realm.App({ id: 'application-0-vhypf' });
 let uniqueNames = [];
 
 
  const useChartOptions = () => {
+  const {favAdded, setFavAdded} = useContext(Fav);
   const [graph,setGraph] = useState(['']);
   const [flag,setFlag] = useState(false);
 
   useEffect(()=>{
     dbconnect();
-  },[flag]);
+   setFavAdded(true);
+  },[flag,favAdded]);
  
 
 const dbconnect = async () => {
@@ -36,7 +38,6 @@ const dbconnect = async () => {
     console.log("db",graphdata)
     setFlag(true);
     const emotions = graphdata.map(entry => entry._id);
-    console.log("Emo ==",emotions)
     setGraph(emotions);
     //console.log("piedata",graph[0])
   } catch (error) {
@@ -45,12 +46,9 @@ const dbconnect = async () => {
 };
  }
 export const OverviewTraffic = (props) => {
+  
   const { chartSeries, labels, sx,keys } = props;
-  // const chartOptions = useChartOptions(keys)
-    // series: [{
-    //   // data: [100, 200, 300],
-    //   backgroundColor: "random",
-    // }]
+  
      useChartOptions(labels)
   
   
@@ -109,7 +107,7 @@ export const OverviewTraffic = (props) => {
                   color="text.secondary"
                   variant="subtitle2"
                 >
-                  {label}%
+                  {label}
                 </Typography>
               </Box>
              ); 

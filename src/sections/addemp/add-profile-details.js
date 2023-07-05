@@ -33,9 +33,10 @@ export const AddProfileDetails = () => {
     email: '',
     phone: '',
     jobtitle: '',
+    project:'',
     Imgurl: ''
   });
-  // console.log("values ==", values.Imgurl)
+   console.log("values ==", values.project)
 
   const router = useRouter()
  
@@ -149,7 +150,8 @@ export const AddProfileDetails = () => {
       }
     }
   };
- 
+//  console.log("project",values.project)
+
 
   return (
     <form
@@ -270,6 +272,22 @@ export const AddProfileDetails = () => {
                   onChange={handleChange}
                   inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                   value={values.jobtitle}
+                />
+
+              </Grid>
+              <Grid
+                xs={12}
+                md={6}
+              >
+                <TextField
+                  fullWidth
+                  label="Project"
+                  name="project"
+                  // required
+                //  error={!values.project ? true : false}
+                  onChange={handleChange}
+                  // inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  value={values.project}
                 />
 
               </Grid>

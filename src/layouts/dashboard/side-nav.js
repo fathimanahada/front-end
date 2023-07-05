@@ -71,7 +71,7 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                MoodTracker
+                EmotionTracker
               </Typography>
               
             </div>

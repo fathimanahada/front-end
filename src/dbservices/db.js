@@ -1,6 +1,6 @@
 import * as Realm from "realm-web";
-
- 
+import {Fav} from 'src/Context.js';
+import React,{useContext} from "react";
 const app = new Realm.App({ id: 'application-0-vhypf' });
 
 
@@ -36,24 +36,33 @@ export const getNewData = async () => {
      .find({})
 }
 
-export const getAggregate = async(startdate, enddate) => {
+let name='';
+
+ export const getAggregate = async (name) => {
+  console.log("aggregate called ",name);
   const query = [];
-  // if(s){
-  //   query.push({
-  //     $
-  //   })
-  // }
+ 
   query.push({
+    $match: {
+      Name: name// Use the userName parameter to match dynamically
+    }
+  });
+
+  query.push({
+
     $group: {
-      "_id": "$Average_emotion",
-      "count": {
-        "$sum": 1
+      
+     _id: "$Average_emotion",
+     count: {
+        $sum: 1
       }
     }
-  })
+  });
+  //setFavAdded(true);
   return await getDBInstance(app).collection('collection')
-  .aggregate(query)
-}
+    .aggregate(query);
+    
+};
 
 export const insertDB = async ({values,url}) => {
  return await getDBInstance(app).collection('employee')
@@ -63,6 +72,7 @@ export const insertDB = async ({values,url}) => {
       email:values.email,
       phoneNumber:Number(values.phone),
       jobTitle:values.jobtitle,
+      Project:values.project,
       Image :url
 
     })
@@ -82,6 +92,8 @@ export const deletDB = async ({deletid}) => {
         email:values.email,
         phoneNumber:Number(values.phone),
         jobTitle:values.jobtitle,
+        Project:values.project,
+
         
       }})
  }

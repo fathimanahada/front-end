@@ -106,6 +106,9 @@ export const CustomersTable = (props) => {
                   JobTitle
                 </TableCell>
                 <TableCell>
+                  Project
+                </TableCell>
+                <TableCell>
                   Actions
                 </TableCell>
               </TableRow>
@@ -166,6 +169,9 @@ export const CustomersTable = (props) => {
                     </TableCell>
                     <TableCell>
                       {customer.jobTitle}
+                    </TableCell>
+                    <TableCell>
+                      {customer.Project}
                     </TableCell>
                     <TableCell>
                       <Box display="flex" alignItems="center">

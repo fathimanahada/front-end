@@ -131,7 +131,7 @@ export const AuthProvider = (props) => {
 
   const signIn = async (email, password) => {
     await app.logIn(Realm.Credentials.emailPassword(email,password))
-    if (email !== 'fathimanahada4567@gmail.com' || password !== '123456') {
+    if (email !== 'HR@coderythm.com' || password !== '123456') {
       throw new Error('Please check your email and password');
     }
 

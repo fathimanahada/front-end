@@ -28,7 +28,7 @@ const Page = () => {
   const [method, setMethod] = useState('email');
   const formik = useFormik({
     initialValues: {
-      email: 'fathimanahada4567@gmail.com',
+      email: 'HR@coderythm.com',
       password: '123456',
       submit: null
     },
@@ -74,7 +74,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Login 
         </title>
       </Head>
       <Box
@@ -106,7 +106,7 @@ const Page = () => {
                 color="text.secondary"
                 variant="body2"
               >
-                Don&apos;t have an account?
+                {/* Don&apos;t have an account?
                 &nbsp;
                 <Link
                   component={NextLink}
@@ -115,7 +115,7 @@ const Page = () => {
                   variant="subtitle2"
                 >
                   Register
-                </Link>
+                </Link> */}
               </Typography>
             </Stack>
             <Tabs
